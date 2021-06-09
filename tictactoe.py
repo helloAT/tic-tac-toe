@@ -66,7 +66,11 @@ def draw_board(board):
 draw_board(board)
 
 while True:
-    player_input = int(input())
+    while True:
+        player_input = int(input())
+        if player_input in vboard:
+            break
+
     vboard.remove(player_input)
     board[player_input//3][player_input%3] = 1
 
