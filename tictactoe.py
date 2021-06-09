@@ -63,42 +63,42 @@ def draw_board(board):
         else:
             print('\n')
 
-draw_board(board)
-
-while True:
+def main():
     while True:
-        player_input = int(input())
-        if player_input in vboard:
+        while True:
+            player_input = int(input())
+            if player_input in vboard:
+                break
+
+        vboard.remove(player_input)
+        board[player_input//3][player_input%3] = 1
+
+        draw_board(board)
+
+        if check_win(board) == 1:
+            print('You Win!')
+            break
+        elif check_win(board) == 0:
+            print('Computer Wins!')
+            break
+        elif check_win(board) == -1:
+            print('Draw')
+            break
+        
+        computer_input = random.choice(vboard)
+        vboard.remove(computer_input)
+        board[computer_input//3][computer_input%3] = 0
+
+        draw_board(board)
+
+        if check_win(board) == 1:
+            print('You Win!')
+            break
+        elif check_win(board) == 0:
+            print('Computer Wins!')
+            break
+        elif check_win(board) == -1:
+            print('Draw')
             break
 
-    vboard.remove(player_input)
-    board[player_input//3][player_input%3] = 1
-
-    draw_board(board)
-
-    if check_win(board) == 1:
-        print('You Win!')
-        break
-    elif check_win(board) == 0:
-        print('Computer Wins!')
-        break
-    elif check_win(board) == -1:
-        print('Draw')
-        break
-    
-    computer_input = random.choice(vboard)
-    vboard.remove(computer_input)
-    board[computer_input//3][computer_input%3] = 0
-
-    draw_board(board)
-
-    if check_win(board) == 1:
-        print('You Win!')
-        break
-    elif check_win(board) == 0:
-        print('Computer Wins!')
-        break
-    elif check_win(board) == -1:
-        print('Draw')
-        break
-    
+main()
