@@ -9,9 +9,6 @@
 """
 import random
 
-vboard = list(range(9))
-board = [[-1,-1,-1],[-1,-1,-1],[-1,-1,-1]]
-
 def check_win(board):
     player = 1
     ai = 0
@@ -64,6 +61,9 @@ def draw_board(board):
             print('\n')
 
 def main():
+    vboard = list(range(9))
+    board = [[-1,-1,-1],[-1,-1,-1],[-1,-1,-1]]
+
     while True:
         while True:
             player_input = int(input())
