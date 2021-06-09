@@ -71,8 +71,12 @@ def main():
         update = update_board(board, available, player_input, 'Player')
         if update != None:
             board = update
+        else:
+            break
         update = update_board(board, available, random.choice(available), 'Computer')
         if update != None:
             board = update
+        else:
+            break
 
 main()
