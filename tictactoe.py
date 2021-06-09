@@ -1,38 +1,19 @@
-"""
-1. Generate a tic-tac-toe board and display it on screen.
-2. a. The player will be the 'X' marker and AI will be the 'O' marker.
-   b. The player with the 'X' marker will make the first move. 
-      Request an input using `x, y` coordinates or integer values [0, 8], inclusive, and mark the spot with 'X'.
-   c. The AI will then select a random available position as its move.
-3. Declare a winner when 3 of the same symbol are in the same row, column or diagonal.
-4. Declare a tie game if all squares are filled and no set of 3 symbols exist in the same row, column or diagonal.
-"""
 import random
 
 def check_win(board):
-    player = 1
-    ai = 0
-
     for row in board:
         if row == [0]*3:
             return 0
         elif row == [1]*3:
             return 1
-    
+
     for col in range(3):
-        if board[0][col] == board[1][col] == board[2][col] == 0:
-            return 0
-        elif board[0][col] == board[1][col] == board[2][col] == 1:
+        if board[0][col] == board[1][col] == board[2][col] != -1:
             return 1
-    
-    if board[0][0] == board[1][1] == board[2][2] == 0:
-        return 0
-    elif board[0][0] == board[1][1] == board[2][2] == 1:
+
+    if board[0][0] == board[1][1] == board[2][2] != -1:
         return 1
-    
-    if board[0][2] == board[1][1] == board[2][0] == 0:
-        return 0
-    elif board[0][2] == board[1][1] == board[2][0] == 1:
+    if board[0][2] == board[1][1] == board[2][0] != -1:
         return 1
 
     for row in board:
@@ -40,7 +21,7 @@ def check_win(board):
             if col == -1:
                 return None
     
-    return -1
+    return 0
 
 def draw_board(board):
     for r,row in enumerate(board):
@@ -55,50 +36,43 @@ def draw_board(board):
                 print('X', end=e)
             elif col == 1:
                 print('O', end=e)
+
         if r != 2:
             print('\n-----')
         else:
             print('\n')
 
+def update_board(board, available, move, turn):
+    id = {'Player': 1, 'Computer': 0}
+    available.remove(move)
+    board[move//3][move%3] = id[turn]
+    draw_board(board)
+    state = check_win(board)
+
+    if state == 1:
+        print(f'{turn} Wins!')
+    elif state == 0:
+        print('Draw!')
+    else:
+        return board
+
 def main():
-    vboard = list(range(9))
+    available = list(range(9))
     board = [[-1,-1,-1],[-1,-1,-1],[-1,-1,-1]]
+    draw_board(board)
 
     while True:
+        player_input = int(input('Enter your move: '))
         while True:
-            player_input = int(input())
-            if player_input in vboard:
+            if player_input in available:
                 break
-
-        vboard.remove(player_input)
-        board[player_input//3][player_input%3] = 1
-
-        draw_board(board)
-
-        if check_win(board) == 1:
-            print('You Win!')
-            break
-        elif check_win(board) == 0:
-            print('Computer Wins!')
-            break
-        elif check_win(board) == -1:
-            print('Draw')
-            break
-        
-        computer_input = random.choice(vboard)
-        vboard.remove(computer_input)
-        board[computer_input//3][computer_input%3] = 0
-
-        draw_board(board)
-
-        if check_win(board) == 1:
-            print('You Win!')
-            break
-        elif check_win(board) == 0:
-            print('Computer Wins!')
-            break
-        elif check_win(board) == -1:
-            print('Draw')
-            break
+            else:
+                player_input = int(input('Please enter a valid move: '))
+        update = update_board(board, available, player_input, 'Player')
+        if update != None:
+            board = update
+        update = update_board(board, available, random.choice(available), 'Computer')
+        if update != None:
+            board = update
 
 main()
